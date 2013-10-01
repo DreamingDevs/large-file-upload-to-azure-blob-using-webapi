@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20827.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureWebWorkerRoles", "AzureWebWorkerRoles\AzureWebWorkerRoles.ccproj", "{D6561923-0AD0-4578-9216-D85F53560DA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIRole", "WebAPIRole\WebAPIRole.csproj", "{5C87561A-02B8-4794-B383-2D6F5DC1819F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerRoleWithSBQueue", "WorkerRoleWithSBQueue\WorkerRoleWithSBQueue.csproj", "{15B3E0D2-6217-493A-A690-158C497F5318}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6561923-0AD0-4578-9216-D85F53560DA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6561923-0AD0-4578-9216-D85F53560DA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6561923-0AD0-4578-9216-D85F53560DA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6561923-0AD0-4578-9216-D85F53560DA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C87561A-02B8-4794-B383-2D6F5DC1819F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C87561A-02B8-4794-B383-2D6F5DC1819F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C87561A-02B8-4794-B383-2D6F5DC1819F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C87561A-02B8-4794-B383-2D6F5DC1819F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
