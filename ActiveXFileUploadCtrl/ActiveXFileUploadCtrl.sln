@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveXFileUploadCtrl", "ActiveXFileUploadCtrl\ActiveXFileUploadCtrl.csproj", "{9EE75473-2162-4324-B170-0D27DF33A801}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ActiveXSetpUp", "ActiveXSetpUp\ActiveXSetpUp.vdproj", "{53EE545B-9942-45F4-BE25-230909DB5CF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveXWebHost", "ActiveXWebHost\ActiveXWebHost.csproj", "{FD762D09-0D57-4D19-9FAD-64FFF1088709}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9EE75473-2162-4324-B170-0D27DF33A801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EE75473-2162-4324-B170-0D27DF33A801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EE75473-2162-4324-B170-0D27DF33A801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EE75473-2162-4324-B170-0D27DF33A801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53EE545B-9942-45F4-BE25-230909DB5CF2}.Debug|Any CPU.ActiveCfg = Debug
+		{53EE545B-9942-45F4-BE25-230909DB5CF2}.Release|Any CPU.ActiveCfg = Release
+		{FD762D09-0D57-4D19-9FAD-64FFF1088709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD762D09-0D57-4D19-9FAD-64FFF1088709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD762D09-0D57-4D19-9FAD-64FFF1088709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD762D09-0D57-4D19-9FAD-64FFF1088709}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
