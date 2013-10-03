@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="FileUploadWebRole" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-03.2.0">
   <Role name="WebAPI">
-    <Instances count="1" />
+    <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="rami" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEGBCVldO9VeUQhbA/bFM6EkwDQYJKoZIhvcNAQEBBQAEggEAq7FDqkQ2CySJ8Jvb8rhizVZpM9hxs9oiBge5eNl0hvdT/nNtJKdiF5HyafBf+GXxXiTDwzBMgiBDw6i3u0iY6BrwT0Y/xsYzQzRCRtSDO7DcW18HiwNveut5khIj405sw2JK7aS/MN+vURZg7GZTlZAKeWLWT6RnM8/kmJzmEzdj1J8fuSwI0iHi+pjTccsHGgtI8NSPWuOTX3UQJTkLyZ87lYzmKx89T7t0j0JVMHNwWAZgLvD+GNUftpmXuoMLrcPKHVOl+OshFLARWBbRwWTNJkAJUxMXXVNfKZ/OiZarpNCgYM81BTp1aaZCp60uORF2f4tLesdCGvT5tMNghzAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECC3LO5fzPeQDgBBlYDyQmiQry+CPNGhi/0SO" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2014-10-03T23:59:59.0000000+05:30" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
     </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="CCBF7364A29105EC7B36C4C3910740E328AF042A" thumbprintAlgorithm="sha1" />
+    </Certificates>
   </Role>
 </ServiceConfiguration>
