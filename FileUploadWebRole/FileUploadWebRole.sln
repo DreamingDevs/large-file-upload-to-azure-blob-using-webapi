@@ -7,7 +7,7 @@ Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "FileUploadWebRole", "FileUp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{046A7108-5361-4E4D-8FA9-52143E991F09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlobRepository", "BlobRepository\BlobRepository.csproj", "{C1343A46-5BEC-4BC6-B614-E2FF7B5365FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "BlobRepository\Repository.csproj", "{C1343A46-5BEC-4BC6-B614-E2FF7B5365FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal

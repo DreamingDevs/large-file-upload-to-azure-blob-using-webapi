@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Repository;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,11 +9,19 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
     public class FileApiController : ApiController
     {
+        static Dictionary<string, string> fileChunkTracker = new Dictionary<string, string>();
+        private IBlobRepository _blobRepository;
+        public FileApiController(IBlobRepository BlobRepository)
+        {
+            _blobRepository = BlobRepository;
+        }
+
         public string Get()
         {
             return Guid.NewGuid().ToString();
@@ -24,44 +33,67 @@ namespace WebAPI.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
-            string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
-            CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation); 
 
-            try 
-            { 
+            // Temp storage location for File Chunks
+            string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
+            CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation);
+
+            try
+            {
                 // Read all contents of multipart message into CustomMultipartFormDataStreamProvider. 
-                await Request.Content.ReadAsMultipartAsync(provider); 
-                
-                foreach (MultipartFileData file in provider.FileData) 
+                await Request.Content.ReadAsMultipartAsync(provider);
+                MultipartFileData file = provider.FileData[0];
+
+                //Check for not null or empty
+                if (file == null)
+                    throw new HttpResponseException(HttpStatusCode.NotFound);
+
+
+                // Read file chunk detail
+                FileChunk chunk = file.Headers.GetMetaData();
+                chunk.FileId = file.Headers.Where(p => p.Key == "FileId").First().Value.First();
+                chunk.ChunkId = file.Headers.Where(p => p.Key == "ChunkId").First().Value.First();
+                chunk.IsCompleted = Boolean.Parse(file.Headers.Where(p => p.Key == "IsCompleted").First().Value.First());
+
+
+                // Read File Chunk Bytes and Delete the temp copy
+                byte[] fileChunkBytes;
+                using (FileStream fs = new FileStream(file.LocalFileName, FileMode.Open, FileAccess.Read))
                 {
-                    Stream s = provider.GetStream(provider.Contents[0], provider.Contents[0].Headers);
-                    // Get Bytes here....and push it to blob
-                } 
-                
+                    fileChunkBytes = new byte[fs.Length];
+                    fs.Read(fileChunkBytes, 0, (int)fs.Length);
+                    fs.Close();
+                    fs.Dispose();
+                }
+                System.IO.File.Delete(file.LocalFileName);
+
+                // TODO
+                // Get saved file bytes using LocalFileName
+                // put it in the putblock
+                // Update Dictionary with FileId - PutblockId
+
+                // TODO
+                // check for last chunk, if so, then do a PubBlockList
+                // Remove all keys of that FileID from Dictionary
+
                 // Send OK Response along with saved file names to the client.                 
-                return Request.CreateResponse(HttpStatusCode.OK); 
-            } 
-            catch (System.Exception e) 
-            { 
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e); 
-            } 
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (System.Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
+            }
         }
 
-        public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider 
-        { 
+        public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
+        {
             public CustomMultipartFormDataStreamProvider(string path) : base(path) { }
 
             public override string GetLocalFileName(HttpContentHeaders headers)
             {
                 return headers.ContentDisposition.FileName.Replace("\"", string.Empty);
             }
-
-            public override Stream GetStream(HttpContent parent, HttpContentHeaders headers)
-            {
-                return base.GetStream(parent, headers);
-            }
         }
 
-          
     }
 }
