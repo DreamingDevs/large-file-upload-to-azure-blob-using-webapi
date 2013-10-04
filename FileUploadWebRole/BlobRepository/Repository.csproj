@@ -7,8 +7,8 @@
     <ProjectGuid>{C1343A46-5BEC-4BC6-B614-E2FF7B5365FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlobRepository</RootNamespace>
-    <AssemblyName>BlobRepository</AssemblyName>
+    <RootNamespace>Repository</RootNamespace>
+    <AssemblyName>Repository</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
