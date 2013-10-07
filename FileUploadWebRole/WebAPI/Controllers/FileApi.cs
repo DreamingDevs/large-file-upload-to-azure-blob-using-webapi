@@ -1,6 +1,8 @@
 ﻿using Repository;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -35,37 +37,22 @@ namespace WebAPI.Controllers
             }
 
             // Temp storage location for File Chunks
-            string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
-            CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation);
+            MultipartMemoryStreamProvider provider = new MultipartMemoryStreamProvider();
 
             try
             {
-                // Read all contents of multipart message into CustomMultipartFormDataStreamProvider. 
+                // Read all contents of multipart message into MultipartMemoryStreamProvider.                 
                 await Request.Content.ReadAsMultipartAsync(provider);
-                MultipartFileData file = provider.FileData[0];
+                Stream fileChunk = await provider.Contents[0].ReadAsStreamAsync();
+                
 
                 //Check for not null or empty
-                if (file == null)
+                if (fileChunk == null)
                     throw new HttpResponseException(HttpStatusCode.NotFound);
 
 
                 // Read file chunk detail
-                FileChunk chunk = file.Headers.GetMetaData();
-                chunk.FileId = file.Headers.Where(p => p.Key == "FileId").First().Value.First();
-                chunk.ChunkId = file.Headers.Where(p => p.Key == "ChunkId").First().Value.First();
-                chunk.IsCompleted = Boolean.Parse(file.Headers.Where(p => p.Key == "IsCompleted").First().Value.First());
-
-
-                // Read File Chunk Bytes and Delete the temp copy
-                byte[] fileChunkBytes;
-                using (FileStream fs = new FileStream(file.LocalFileName, FileMode.Open, FileAccess.Read))
-                {
-                    fileChunkBytes = new byte[fs.Length];
-                    fs.Read(fileChunkBytes, 0, (int)fs.Length);
-                    fs.Close();
-                    fs.Dispose();
-                }
-                System.IO.File.Delete(file.LocalFileName);
+                FileChunk chunk = provider.Contents[0].Headers.GetMetaData();
 
                 // TODO
                 // Get saved file bytes using LocalFileName
@@ -84,16 +71,5 @@ namespace WebAPI.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
             }
         }
-
-        public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
-        {
-            public CustomMultipartFormDataStreamProvider(string path) : base(path) { }
-
-            public override string GetLocalFileName(HttpContentHeaders headers)
-            {
-                return headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-            }
-        }
-
     }
 }
