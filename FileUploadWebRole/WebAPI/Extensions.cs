@@ -20,4 +20,15 @@ namespace WebAPI
             };
         }
     }
+
+    public class BlockIdComparer : IComparer<string>
+    {
+        public int Compare(string x, string y)
+        {
+            Int32 xInt = Convert.ToInt32(x);
+            Int32 yInt = Convert.ToInt32(y);
+            return xInt > yInt ? 1 : -1;
+        }
+    }
+
 }

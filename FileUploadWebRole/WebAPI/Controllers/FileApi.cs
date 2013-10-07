@@ -62,6 +62,9 @@ namespace WebAPI.Controllers
                 if (chunk.IsCompleted)
                 {
                     List<string> blockIds = fileChunkTracker.Where(p => p.Value == chunk.FileId).Select(p => p.Key).ToList();
+
+                    var comparer = new BlockIdComparer();
+                    blockIds.Sort(comparer);
                     _blobRepository.CommintBlocks(chunk.FileId, blockIds);
                     foreach (var item in blockIds)
                     {
