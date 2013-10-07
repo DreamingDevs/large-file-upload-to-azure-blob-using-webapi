@@ -53,15 +53,25 @@ namespace WebAPI.Controllers
 
                 // Read file chunk detail
                 FileChunk chunk = provider.Contents[0].Headers.GetMetaData();
+                chunk.BlockId = Guid.NewGuid().ToString();
 
-                // TODO
                 // Get saved file bytes using LocalFileName
                 // put it in the putblock
                 // Update Dictionary with FileId - PutblockId
+                _blobRepository.UploadBlock(chunk.FileId, chunk.BlockId, fileChunk);
+                fileChunkTracker.Add(chunk.BlockId, chunk.FileId);
 
-                // TODO
                 // check for last chunk, if so, then do a PubBlockList
                 // Remove all keys of that FileID from Dictionary
+                if (chunk.IsCompleted)
+                {
+                    List<string> blockIds = fileChunkTracker.Where(p => p.Value == chunk.FileId).Select(p => p.Key).ToList();
+                    _blobRepository.CommintBlocks(chunk.FileId, blockIds);
+                    foreach (var item in blockIds)
+                    {
+                        fileChunkTracker.Remove(item);
+                    }
+                }
 
                 // Send OK Response along with saved file names to the client.                 
                 return Request.CreateResponse(HttpStatusCode.OK);
