@@ -43,23 +43,19 @@ namespace WebAPI.Controllers
             {
                 // Read all contents of multipart message into MultipartMemoryStreamProvider.                 
                 await Request.Content.ReadAsMultipartAsync(provider);
-                Stream fileChunk = await provider.Contents[0].ReadAsStreamAsync();
-                
+                Stream fileChunk = await provider.Contents[0].ReadAsStreamAsync();                
 
                 //Check for not null or empty
                 if (fileChunk == null)
                     throw new HttpResponseException(HttpStatusCode.NotFound);
 
-
                 // Read file chunk detail
                 FileChunk chunk = provider.Contents[0].Headers.GetMetaData();
-                chunk.BlockId = Guid.NewGuid().ToString();
 
-                // Get saved file bytes using LocalFileName
-                // put it in the putblock
+                // Get saved file bytes using LocalFileName. Put it in the putblock.
                 // Update Dictionary with FileId - PutblockId
-                _blobRepository.UploadBlock(chunk.FileId, chunk.BlockId, fileChunk);
-                fileChunkTracker.Add(chunk.BlockId, chunk.FileId);
+                _blobRepository.UploadBlock(chunk.FileId, chunk.ChunkId, fileChunk);
+                fileChunkTracker.Add(chunk.ChunkId, chunk.FileId);
 
                 // check for last chunk, if so, then do a PubBlockList
                 // Remove all keys of that FileID from Dictionary

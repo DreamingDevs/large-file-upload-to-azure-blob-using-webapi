@@ -12,6 +12,5 @@ namespace WebAPI.Models
         public string ChunkId { get; set; }
         public double Size { get; set; }
         public bool IsCompleted { get; set; }
-        public string BlockId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,7 @@ namespace Repository
             container.CreateIfNotExists();
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(FileId);
 
-            string blockID = Convert.ToBase64String(Encoding.UTF8.GetBytes(BlockId.ToString()));
-            blockBlob.PutBlock(blockID, Data, null);
+            blockBlob.PutBlock(BlockId, Data, null);
             return true;
         }
 
@@ -38,7 +38,7 @@ namespace Repository
         {
             get
             {
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse("Connection Stirng goes here");
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 return blobClient;
             }
@@ -48,7 +48,7 @@ namespace Repository
         {
             get
             {
-                return "Files";
+                return CloudConfigurationManager.GetSetting("StorageContainer");
             }
         }
     }
