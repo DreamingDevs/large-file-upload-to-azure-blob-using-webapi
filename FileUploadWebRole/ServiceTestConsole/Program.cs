@@ -21,7 +21,7 @@ namespace ServiceTestConsole
                 // Get the File Id
                 var init = client.GetStringAsync("/api/fileapi").Result;
                 string fileId = init.Trim(new char[] { '"' });
-                Console.WriteLine(fileId);
+                Console.WriteLine(String.Format("File ID -> {0}",fileId));
 
 
 
@@ -50,12 +50,12 @@ namespace ServiceTestConsole
                         }
 
                         chunks.Add(buffer);
-                        Console.WriteLine(buffer.Length);
                         index = (int)fileData.Position;
                     }
                 }
 
                 // Send chunks to WebApi endpoint for commits
+                Console.WriteLine("Uploading Chunks - Started");
                 int chunkId = 1;
                 foreach (var chunk in chunks)
                 {
@@ -75,7 +75,7 @@ namespace ServiceTestConsole
 
                         // Make a call to Web API 
                         var result = client.PostAsync("/api/fileapi", content).Result;
-                        Console.WriteLine("Chunk" + chunkId.ToString() + " - " + result.StatusCode);
+                        Console.WriteLine(String.Format("Chunk{0} with {1} bytes size. Status:{2}", chunkId.ToString(), chunk.Length, result.StatusCode));
                     }
 
                     chunkId++;
@@ -88,7 +88,7 @@ namespace ServiceTestConsole
                 // new KeyValuePair<string, string>("ChunkId", "456")
                 //});
                 //content.Add(fieldContent);
-
+                Console.WriteLine("Uploading Chunks - Completed");
                 Console.ReadLine();
             }
         }
