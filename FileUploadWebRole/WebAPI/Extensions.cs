@@ -16,7 +16,8 @@ namespace WebAPI
             {
                 ChunkId = Convert.ToBase64String(Encoding.UTF8.GetBytes(headers.Where(p => p.Key == "ChunkId").First().Value.First())),
                 FileId = headers.Where(p => p.Key == "FileId").First().Value.First(),
-                IsCompleted = Boolean.Parse(headers.Where(p => p.Key == "IsCompleted").First().Value.First())
+                IsCompleted = Boolean.Parse(headers.Where(p => p.Key == "IsCompleted").First().Value.First()),
+                OriginalChunkId = headers.Where(p => p.Key == "ChunkId").First().Value.First()
             };
         }
     }

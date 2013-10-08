@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
 {
     public class FileApiController : ApiController
     {
-        static Dictionary<string, string> fileChunkTracker = new Dictionary<string, string>();
+        static List<FileChunk> fileChunkTracker = new List<FileChunk>();
         private IBlobRepository _blobRepository;
         public FileApiController(IBlobRepository BlobRepository)
         {
@@ -55,21 +55,20 @@ namespace WebAPI.Controllers
                 // Get saved file bytes using LocalFileName. Put it in the putblock.
                 // Update Dictionary with FileId - PutblockId
                 _blobRepository.UploadBlock(chunk.FileId, chunk.ChunkId, fileChunk);
-                fileChunkTracker.Add(chunk.ChunkId, chunk.FileId);
+                fileChunkTracker.Add(chunk);
 
                 // check for last chunk, if so, then do a PubBlockList
                 // Remove all keys of that FileID from Dictionary
                 if (chunk.IsCompleted)
                 {
-                    List<string> blockIds = fileChunkTracker.Where(p => p.Value == chunk.FileId).Select(p => p.Key).ToList();
+                    Dictionary<string, string> blockIds = fileChunkTracker.Where(p => p.FileId == chunk.FileId)
+                                                                          .Select(p => new { p.OriginalChunkId, p.ChunkId })
+                                                                          .ToDictionary( d => d.OriginalChunkId, d => d.ChunkId);
 
                     var comparer = new BlockIdComparer();
-                    blockIds.Sort(comparer);
-                    _blobRepository.CommintBlocks(chunk.FileId, blockIds);
-                    foreach (var item in blockIds)
-                    {
-                        fileChunkTracker.Remove(item);
-                    }
+                    blockIds.OrderBy(p => p.Key,comparer);
+                    _blobRepository.CommintBlocks(chunk.FileId, blockIds.Select(p => p.Value).ToList());
+                    fileChunkTracker.RemoveAll(p => p.FileId == chunk.FileId);
                 }
 
                 // Send OK Response along with saved file names to the client.                 

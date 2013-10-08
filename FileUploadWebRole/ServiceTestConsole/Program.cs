@@ -64,7 +64,7 @@ namespace ServiceTestConsole
                     fileContent.Headers.Add("FileId", fileId);
                     fileContent.Headers.Add("ChunkId", chunkId.ToString("d7"));
 
-                    if (chunkId == chunk.Length)
+                    if (chunkId == chunks.Count())
                         fileContent.Headers.Add("IsCompleted", "true");
                     else
                         fileContent.Headers.Add("IsCompleted", "false");
@@ -75,7 +75,7 @@ namespace ServiceTestConsole
 
                         // Make a call to Web API 
                         var result = client.PostAsync("/api/fileapi", content).Result;
-                        Console.WriteLine(result.StatusCode);
+                        Console.WriteLine("Chunk" + chunkId.ToString() + " - " + result.StatusCode);
                     }
 
                     chunkId++;
