@@ -14,6 +14,10 @@ So we wanted to preset a simple and elegant solution throught Microsoft's Azure 
 	* IsCompleted => Boolean value. True in case last chunk is attachecd to request. False in case of any other chunk.
 5. On successful request, server will process the request and sends back a 200 OK HTTP response. In case of any error, there will be 500 Internal Server Error.
 
+NEXT PRIORITY:
+-------------
+1. Support Multiple WebRole Instances. Prsent code base supports only 1 instance.
+
 IMPORTANT NOTES:
 -------------
 1. Sending last byte chunk (with IsCompleted:true) is very important. Or else all the other chunks will not be commited to Azure Blob Storage.
@@ -35,7 +39,7 @@ TEST RUN:
 
 CREDITS:
 -----------
-> 1. Do not forget to see contributors section. It is all their hardwork.
+> 1. Mohan (Code Ontributor). Also do not forget to see contributors section. It is all their hardwork.
 > 2. Gaurav Mantri [Azure MVP], for helping me understand Blob Storage through his blog.
 > 3. MSDN Documentation.
 
