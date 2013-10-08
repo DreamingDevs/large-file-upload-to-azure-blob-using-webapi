@@ -16,7 +16,7 @@ namespace ServiceTestConsole
             using (var client = new HttpClient())
             {
                 // Make sure to change API address 
-                client.BaseAddress = new Uri("http://127.0.0.1:81/");
+                client.BaseAddress = new Uri("http://fileupload.cloudapp.net/");
 
                 // Get the File Id
                 var init = client.GetStringAsync("/api/fileapi").Result;
