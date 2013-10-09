@@ -14,9 +14,19 @@ So we wanted to preset a simple and elegant solution throught Microsoft's Azure 
 	* IsCompleted => Boolean value. True in case last chunk is attachecd to request. False in case of any other chunk.
 5. On successful request, server will process the request and sends back a 200 OK HTTP response. In case of any error, there will be 500 Internal Server Error.
 
+TECHNICAL STACK:
+---------------
+> 1. Azure WebRoles
+> 2. Azure Cache Service
+> 3. Azure Blob Storage
+> 4. ASP.Net MVC4 Web Application
+> 5. JQuery latest
+> 6. .Net 4.5 Console Application (Test)
+
 NEXT PRIORITY:
 -------------
-1. Support Multiple WebRole Instances. Prsent code base supports only 1 instance.
+1. Support Multiple WebRole Instances. Present code base supports only 1 instance. We are working on to get Azure Cache
+service in place.
 
 IMPORTANT NOTES:
 -------------
@@ -48,6 +58,6 @@ DISCLAIMER:
 All ideas and implementations made in this project are out of my own self thought process. Credits are given to
 respective people, who directly or indirectly helped me in understanding the concepts of latest technologies.
 It is also to be remembered that views/suggestions/practices involved in this project are strictly of my own 
-representations. Present project/code/[Any thing to that matter which is from DreamingDevs] doesn't relat to my 
+representations. Present project/code/[Any thing to that matter which is from DreamingDevs] doesn't relate to my 
 present/past employers in any way. Present project may suit some of the real world demands and also may not, 
 it’s purely the responsibility of the person who intended to use any of the material placed in this project work.
