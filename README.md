@@ -3,7 +3,7 @@ Upload large files using JQuery to Azure Blob Storage through Azure Web Role Web
 
 The main aim of this project is to provide a working scalable solution to large file uploads to server. In this modern era, when web development taking modern cloud workflows, it is time for us to evolve the traditional problems which we encounter in uploading files. We pretty much experience traditional ASP.Net Web problems at the time of working with file uploads. Even though ASP.Net allowed some provisions (which would make uploading files easier) by making some Config changes (for example - maxRequestLength and executionTimeOut), still server timeouts and long running connections are creating chaos in this particular requirements.
 
-So we wanted to preset a simple and elegant solution throught Microsoft's Azure Cloud Services. Please follow below description.
+So we wanted to present a simple and elegant solution throught Microsoft's Azure Cloud Services. Please follow below description.
 
 1. In this solution, we provide TWO WebApi endpoints - FileApi/Get and FileApi/Post.
 2. Any client tenant which wants to use our upload service, first makes a request to Get endpoint. 
@@ -32,8 +32,9 @@ Important Notes:
 -------------
 1. Sending last byte chunk (with IsCompleted:true) is very important. Or else all the other chunks will not be commited to Azure Blob Storage.
 2. Chunks can be send in **ANY** order. We have a File Chunk Tracker in place to keep track of received chunks.
-3. Sampel C# console test client has been included in the solution. Please try it out. Presently it support 100KB chunks
+3. Sample C# console test client has been included in the solution. Please try it out. Presently it support 100KB chunks
 It can be extended further more if required.
+4. Azure ConnectionStrings are obsolete. Please replace config information with your own settings to make this solution work.
 
 TODO Tasks:
 -----------
