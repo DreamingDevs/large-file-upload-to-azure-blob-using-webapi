@@ -14,7 +14,7 @@ So we wanted to preset a simple and elegant solution throught Microsoft's Azure 
 	* IsCompleted => Boolean value. True in case last chunk is attachecd to request. False in case of any other chunk.
 5. On successful request, server will process the request and sends back a 200 OK HTTP response. In case of any error, there will be 500 Internal Server Error.
 
-TECHNICAL STACK:
+Technical Stack:
 ---------------
 > 1. Azure WebRoles
 > 2. Azure Cache Service
@@ -23,12 +23,12 @@ TECHNICAL STACK:
 > 5. JQuery latest
 > 6. .Net 4.5 Console Application (Test)
 
-NEXT PRIORITY:
+Next Priority:
 -------------
 1. Support Multiple WebRole Instances. Present code base supports only 1 instance. We are working on to get Azure Cache
 service in place.
 
-IMPORTANT NOTES:
+Important Notes:
 -------------
 1. Sending last byte chunk (with IsCompleted:true) is very important. Or else all the other chunks will not be commited to Azure Blob Storage.
 2. Chunks can be send in **ANY** order. We have a File Chunk Tracker in place to keep track of received chunks.
@@ -43,17 +43,17 @@ TODO Tasks:
 > 4. Unit test WebApi endpoints.
 > 5. Testing completed with 100MB file. Still we need to test with 1GB file.
 
-TEST RUN:
+Test Run:
 ----------
 ![Test Iteration1](https://raw.github.com/DreamingDevs/large-file-upload-to-azure-blob-using-webapi/master/Images/Test-Iteration1.png "Test Iteration1")
 
-CREDITS:
+Credits:
 -----------
 > 1. Mohan (Code Ontributor). Also do not forget to see contributors section. It is all their hardwork.
 > 2. Gaurav Mantri [Azure MVP], for helping me understand Blob Storage through his blog.
 > 3. MSDN Documentation.
 
-DISCLAIMER:
+Disclaimer:
 -----------
 All ideas and implementations made in this project are out of my own self thought process. Credits are given to
 respective people, who directly or indirectly helped me in understanding the concepts of latest technologies.
