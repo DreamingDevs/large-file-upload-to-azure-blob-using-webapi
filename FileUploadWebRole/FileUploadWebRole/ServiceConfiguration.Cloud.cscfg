@@ -3,7 +3,7 @@
   <Role name="WebAPI">
     <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="StorageConnectionString" value="[Your Blob Storage ConnectionString]" />
+      <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=itsmyown;AccountKey=IanuakJEqHgC7tkt9otpKetYyGrUwwL7VRhfZtNAWJYylsDZ+YLqseoUohUWghrw0Mw/ehsDxHzFCeLGOGzDNQ==" />
       <Setting name="StorageContainer" value="files" />
     </ConfigurationSettings>
   </Role>
