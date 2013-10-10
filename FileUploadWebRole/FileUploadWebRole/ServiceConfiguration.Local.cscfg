@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <ServiceConfiguration serviceName="FileUploadWebRole" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-03.2.0">
   <Role name="WebAPI">
-    <Instances count="1" />
+    <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=fileuploadsample;AccountKey=5SSJ68wnSGUHxbto2YbIBmfzBXYnPat886CwsohjLRU4swJuMjftmx3SASXF9QyOUlc2EV21qGptYUJQS/z7EA==" />
+      <Setting name="StorageConnectionString" value="[Your Blob Storage ConnectionString]" />
       <Setting name="StorageContainer" value="files" />
     </ConfigurationSettings>
   </Role>
