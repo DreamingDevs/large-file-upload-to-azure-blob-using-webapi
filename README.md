@@ -30,8 +30,7 @@ Technical Stack:
 > 2. Azure Cache Service
 > 3. Azure Blob Storage
 > 4. ASP.Net MVC4 Web Application
-> 5. JQuery latest
-> 6. .Net 4.5 Console Application (Test)
+> 5. .Net 4.5 Console Application (Test)
 
 Next Priority:
 -------------
