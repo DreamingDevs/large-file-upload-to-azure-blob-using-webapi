@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "BlobRepositor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTestConsole", "ServiceTestConsole\ServiceTestConsole.csproj", "{6642FF72-BCBB-4C9C-91C0-5A9FD338BF50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cache", "Cache\Cache.csproj", "{B36084BE-B3AA-4EB1-B53D-5DC79169AC88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6642FF72-BCBB-4C9C-91C0-5A9FD338BF50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6642FF72-BCBB-4C9C-91C0-5A9FD338BF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6642FF72-BCBB-4C9C-91C0-5A9FD338BF50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B36084BE-B3AA-4EB1-B53D-5DC79169AC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B36084BE-B3AA-4EB1-B53D-5DC79169AC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B36084BE-B3AA-4EB1-B53D-5DC79169AC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B36084BE-B3AA-4EB1-B53D-5DC79169AC88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

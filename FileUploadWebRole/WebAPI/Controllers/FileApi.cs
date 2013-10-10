@@ -1,4 +1,5 @@
-﻿using Repository;
+﻿using Cache;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,11 +18,12 @@ namespace WebAPI.Controllers
 {
     public class FileApiController : ApiController
     {
-        static List<FileChunk> fileChunkTracker = new List<FileChunk>();
         private IBlobRepository _blobRepository;
-        public FileApiController(IBlobRepository BlobRepository)
+        private IAzureCache _azureCache;
+        public FileApiController(IBlobRepository BlobRepository, IAzureCache AzureCache)
         {
             _blobRepository = BlobRepository;
+            _azureCache = AzureCache;
         }
 
         public string Get()
@@ -55,20 +57,21 @@ namespace WebAPI.Controllers
                 // Get saved file bytes using LocalFileName. Put it in the putblock.
                 // Update Dictionary with FileId - PutblockId
                 _blobRepository.UploadBlock(chunk.FileId, chunk.ChunkId, fileChunk);
-                fileChunkTracker.Add(chunk);
+                _azureCache.PutItem(new CacheItem() { FileId = chunk.FileId, Item = chunk });
 
                 // check for last chunk, if so, then do a PubBlockList
                 // Remove all keys of that FileID from Dictionary
                 if (chunk.IsCompleted)
                 {
-                    Dictionary<string, string> blockIds = fileChunkTracker.Where(p => p.FileId == chunk.FileId)
-                                                                          .Select(p => new { p.OriginalChunkId, p.ChunkId })
-                                                                          .ToDictionary( d => d.OriginalChunkId, d => d.ChunkId);
+                   List<CacheItem> cacheItems = _azureCache.GetItems(chunk.FileId);
+                   Dictionary<string, string> blockIds = cacheItems.Select(p => (FileChunk)p.Item)
+                                                                   .Select(p => new { p.OriginalChunkId, p.ChunkId })                                                                    
+                                                                   .ToDictionary( d => d.OriginalChunkId, d => d.ChunkId);
 
                     var comparer = new BlockIdComparer();
-                    blockIds.OrderBy(p => p.Key,comparer);
+                    blockIds = blockIds.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
                     _blobRepository.CommintBlocks(chunk.FileId, blockIds.Select(p => p.Value).ToList());
-                    fileChunkTracker.RemoveAll(p => p.FileId == chunk.FileId);
+                    _azureCache.RemoveItems(chunk.FileId);
                 }
 
                 // Send OK Response along with saved file names to the client.                 
