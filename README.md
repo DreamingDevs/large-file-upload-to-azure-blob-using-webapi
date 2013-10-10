@@ -14,6 +14,16 @@ So we wanted to present a simple and elegant solution throught Microsoft's Azure
 	* IsCompleted => Boolean value. True in case last chunk is attachecd to request. False in case of any other chunk.
 5. On successful request, server will process the request and sends back a 200 OK HTTP response. In case of any error, there will be 500 Internal Server Error.
 
+Specialities:
+-------------
+1. WebApi Clients can send chunks of data in any order. We use Windows Azure Cache Service to keep track of arriving chunks and
+only commit if client notifies service about the final chunk.
+2. WebApi Clients have flxibility to send chunks of any size. But we do recommend to follow Azure BLOCK BLOB storage size limitations for 
+seamless integration.
+3. Completely scalable Web Role architecture.
+4. Loosely couple components because if IoC implementation using Unity framework.
+
+
 Technical Stack:
 ---------------
 > 1. Azure WebRoles
@@ -25,16 +35,17 @@ Technical Stack:
 
 Next Priority:
 -------------
-1. Support Multiple WebRole Instances. Present code base supports only 1 instance. We are working on to get Azure Cache
-service in place.
+Have a transaction commit and rollback system. In case of any failure, we rollback the complete Block upload. Then
+we notify the client, so that it can re-send the failed transaction of that particular chunk
 
 Important Notes:
 -------------
 1. Sending last byte chunk (with IsCompleted:true) is very important. Or else all the other chunks will not be commited to Azure Blob Storage.
-2. Chunks can be send in **ANY** order. We have a File Chunk Tracker in place to keep track of received chunks.
-3. Sample C# console test client has been included in the solution. Please try it out. Presently it support 100KB chunks
+2. Sample C# console test client has been included in the solution. Please try it out. Presently it support 100KB chunks
 It can be extended further more if required.
-4. Azure ConnectionStrings are obsolete. Please replace config information with your own settings to make this solution work.
+3. Azure ConnectionStrings are obsolete. Please replace config information with your own settings to make this solution work.
+	* Update CSCFG files in Azure Project with specific Blob storage credentials.
+	* Update Web.Config with Azure Cache specific credentials.
 
 TODO Tasks:
 -----------
@@ -43,6 +54,7 @@ TODO Tasks:
 > 3. Implement Basic Authentication with Client Certificate.
 > 4. Unit test WebApi endpoints.
 > 5. Testing completed with 100MB file. Still we need to test with 1GB file.
+> 6. Code CleanUp.
 
 Test Run:
 ----------
