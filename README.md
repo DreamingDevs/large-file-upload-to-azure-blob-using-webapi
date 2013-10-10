@@ -35,8 +35,9 @@ Technical Stack:
 
 Next Priority:
 -------------
-Have a transaction commit and rollback system. In case of any failure, we rollback the complete Block upload. Then
-we notify the client, so that it can re-send the failed transaction of that particular chunk
+1. Have a transaction commit and rollback system. In case of any failure, we rollback the complete Block upload. Then
+we notify the client, so that it can re-send the failed transaction of that particular chunk.
+2. Code CleanUp to include Operations layer.
 
 Important Notes:
 -------------
@@ -54,7 +55,6 @@ TODO Tasks:
 > 3. Implement Basic Authentication with Client Certificate.
 > 4. Unit test WebApi endpoints.
 > 5. Testing completed with 100MB file. Still we need to test with 1GB file.
-> 6. Code CleanUp.
 
 Test Run:
 ----------
