@@ -2,6 +2,7 @@ using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Repository;
 using Cache;
+using Operations;
 
 namespace WebAPI
 {
@@ -19,9 +20,8 @@ namespace WebAPI
             var container = new UnityContainer();
 
             // register all your components with the container here
-            // e.g. container.RegisterType<ITestService, TestService>();      
-            container.RegisterType<IBlobRepository, BlobRepository>(); 
-            container.RegisterType<IAzureCache, AzureCache>();   
+            // e.g. container.RegisterType<ITestService, TestService>(); 
+            container.RegisterType<IOperations, Operations.Operations>(new InjectionConstructor(typeof(IBlobRepository), typeof(IAzureCache)));
 
             return container;
         }

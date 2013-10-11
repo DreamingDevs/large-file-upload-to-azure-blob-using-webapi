@@ -48,36 +48,30 @@ namespace WebAPI.Controllers
             {
                 // Read all contents of multipart message into MultipartMemoryStreamProvider.                 
                 await Request.Content.ReadAsMultipartAsync(provider);
-                Stream fileChunk = await provider.Contents[0].ReadAsStreamAsync();
 
-                //Check for not null or empty
-                if (fileChunk == null)
-                    throw new HttpResponseException(HttpStatusCode.NotFound);
-
-                // Read file chunk detail
-                FileChunk chunk = provider.Contents[0].Headers.GetMetaData();
-
-                // Get saved file bytes using LocalFileName. Put it in the putblock.
-                // Update Dictionary with FileId - PutblockId
-                //_blobRepository.UploadBlock(chunk.FileId, chunk.ChunkId, fileChunk);
-                //_azureCache.PutItem(new CacheItem() { FileId = chunk.FileId, Item = chunk });
-
-                _operations.UploadChunk(chunk, fileChunk);
-                _operations.CommitChunks(chunk);
-                // check for last chunk, if so, then do a PubBlockList
-                // Remove all keys of that FileID from Dictionary
-                /*if (chunk.IsCompleted)
+                using (Stream fileChunkStream = await provider.Contents[0].ReadAsStreamAsync())
                 {
-                   List<CacheItem> cacheItems = _azureCache.GetItems(chunk.FileId);
-                   Dictionary<string, string> blockIds = cacheItems.Select(p => (FileChunk)p.Item)
-                                                                   .Select(p => new { p.OriginalChunkId, p.ChunkId })                                                                    
-                                                                   .ToDictionary( d => d.OriginalChunkId, d => d.ChunkId);
 
-                    var comparer = new BlockIdComparer();
-                    blockIds = blockIds.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
-                    _blobRepository.CommintBlocks(chunk.FileId, blockIds.Select(p => p.Value).ToList());
-                    _azureCache.RemoveItems(chunk.FileId);
-                }*/
+                    //Check for not null or empty
+                    if (fileChunkStream == null)
+                        throw new HttpResponseException(HttpStatusCode.NotFound);
+
+                    // Read file chunk detail
+                    FileChunk chunk = provider.Contents[0].Headers.GetMetaData();
+                    chunk.ChunkData = fileChunkStream.ReadFully();
+
+                    // Get saved file bytes using LocalFileName. Put it in the putblock.
+                        // Update Dictionary with FileId - PutblockId
+                    _operations.UploadChunk(chunk);
+
+                    // check for last chunk, if so, then do a PubBlockList
+                    // Remove all keys of that FileID from Dictionary
+                    if (chunk.IsCompleted)
+                        _operations.CommitChunks(chunk);
+
+
+                    fileChunkStream.Dispose();
+                }
 
                 // Send OK Response along with saved file names to the client.                 
                 return Request.CreateResponse(HttpStatusCode.OK);

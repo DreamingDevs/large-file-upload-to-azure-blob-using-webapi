@@ -20,26 +20,26 @@ namespace Operations
             _azureCache = AzureCache;
         }
 
-        public void UploadChunk(FileChunk chunk, Stream data)
+        public void UploadChunk(FileChunk chunk)
         {
-            _blobRepository.UploadBlock(chunk.FileId, chunk.ChunkId, data);
-            _azureCache.PutItem(new CacheItem() { FileId = chunk.FileId, Item = chunk });
+            using (MemoryStream stream = new MemoryStream(chunk.ChunkData))
+            {
+                _blobRepository.UploadBlock(chunk.FileId, chunk.ChunkId, stream);
+                _azureCache.PutItem(new CacheItem() { FileId = chunk.FileId, Item = chunk });
+            }
         }
 
         public void CommitChunks(FileChunk chunk)
         {
-            if (chunk.IsCompleted)
-            {
+
                 List<CacheItem> cacheItems = _azureCache.GetItems(chunk.FileId);
                 Dictionary<string, string> blockIds = cacheItems.Select(p => (FileChunk)p.Item)
                                                                 .Select(p => new { p.OriginalChunkId, p.ChunkId })
                                                                 .ToDictionary(d => d.OriginalChunkId, d => d.ChunkId);
 
-                var comparer = new BlockIdComparer();
                 blockIds = blockIds.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
                 _blobRepository.CommintBlocks(chunk.FileId, blockIds.Select(p => p.Value).ToList());
                 _azureCache.RemoveItems(chunk.FileId);
-            }
         }
     }
 }
