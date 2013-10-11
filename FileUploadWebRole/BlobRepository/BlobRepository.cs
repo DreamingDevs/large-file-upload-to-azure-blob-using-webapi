@@ -12,23 +12,23 @@ namespace Repository
 {
     public class BlobRepository : IBlobRepository
     {
-        public bool UploadBlock(string FileId, string BlockId, Stream Data)
+        public bool UploadBlock(string fileId, string blockId, Stream data)
         {
             CloudBlobContainer container = BlobUtilities.GetBlobClient.GetContainerReference(BlobUtilities.Container);
             container.CreateIfNotExists();
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(FileId);
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileId);
 
-            blockBlob.PutBlock(BlockId, Data, null);
+            blockBlob.PutBlock(blockId, data, null);
             return true;
         }
 
-        public bool CommintBlocks(string FileId, List<string> BlockIds)
+        public bool CommintBlocks(string fileId, List<string> blockIds)
         {
             CloudBlobContainer container = BlobUtilities.GetBlobClient.GetContainerReference(BlobUtilities.Container);
             container.CreateIfNotExists();
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(FileId);
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileId);
 
-            blockBlob.PutBlockList(BlockIds);
+            blockBlob.PutBlockList(blockIds);
             return true;
         }
     }

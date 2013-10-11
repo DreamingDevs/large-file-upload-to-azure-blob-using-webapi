@@ -10,7 +10,6 @@ namespace Operations
     public interface IOperations
     {
         void UploadChunk(FileChunk chunk);
-
         void CommitChunks(FileChunk chunk);
     }
 }

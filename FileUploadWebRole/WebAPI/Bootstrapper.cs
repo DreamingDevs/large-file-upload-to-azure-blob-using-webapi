@@ -21,7 +21,13 @@ namespace WebAPI
 
             // register all your components with the container here
             // e.g. container.RegisterType<ITestService, TestService>(); 
-            container.RegisterType<IOperations, Operations.Operations>(new InjectionConstructor(typeof(IBlobRepository), typeof(IAzureCache)));
+            container.RegisterType<IBlobRepository, BlobRepository>();
+            container.RegisterType<IAzureCache, AzureCache>();
+
+            container.RegisterType<IOperations, Operations.Operations>(
+                new InjectionConstructor(
+                    container.Resolve<IBlobRepository>(), 
+                    container.Resolve<IAzureCache>()));
 
             return container;
         }

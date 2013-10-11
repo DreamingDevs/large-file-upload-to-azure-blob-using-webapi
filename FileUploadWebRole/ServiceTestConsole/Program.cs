@@ -62,7 +62,7 @@ namespace ServiceTestConsole
                     var fileContent = new ByteArrayContent(chunk);
                     fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = "Sample.pdf" };
                     fileContent.Headers.Add("FileId", fileId);
-                    fileContent.Headers.Add("ChunkId", chunkId.ToString("d7"));
+                    fileContent.Headers.Add("ChunkId", chunkId.ToString("d8"));
 
                     if (chunkId == chunks.Count())
                         fileContent.Headers.Add("IsCompleted", "true");

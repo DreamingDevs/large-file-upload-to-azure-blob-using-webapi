@@ -9,7 +9,7 @@ namespace Repository
 {
     public interface IBlobRepository
     {
-        bool UploadBlock(string FileId, string BlockId, Stream Data);
-        bool CommintBlocks(string FileId, List<string> BlockIds);
+        bool UploadBlock(string fileId, string blockId, Stream data);
+        bool CommintBlocks(string fileId, List<string> blockIds);
     }
 }

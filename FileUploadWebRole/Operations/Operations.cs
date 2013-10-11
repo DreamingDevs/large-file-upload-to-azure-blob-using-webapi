@@ -31,15 +31,14 @@ namespace Operations
 
         public void CommitChunks(FileChunk chunk)
         {
+            List<CacheItem> cacheItems = _azureCache.GetItems(chunk.FileId);
+            Dictionary<string, string> blockIds = cacheItems.Select(p => (FileChunk)p.Item)
+                                                            .Select(p => new { p.OriginalChunkId, p.ChunkId })
+                                                            .ToDictionary(d => d.OriginalChunkId, d => d.ChunkId);
 
-                List<CacheItem> cacheItems = _azureCache.GetItems(chunk.FileId);
-                Dictionary<string, string> blockIds = cacheItems.Select(p => (FileChunk)p.Item)
-                                                                .Select(p => new { p.OriginalChunkId, p.ChunkId })
-                                                                .ToDictionary(d => d.OriginalChunkId, d => d.ChunkId);
-
-                blockIds = blockIds.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
-                _blobRepository.CommintBlocks(chunk.FileId, blockIds.Select(p => p.Value).ToList());
-                _azureCache.RemoveItems(chunk.FileId);
+            blockIds = blockIds.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
+            _blobRepository.CommintBlocks(chunk.FileId, blockIds.Select(p => p.Value).ToList());
+            _azureCache.RemoveItems(chunk.FileId);
         }
     }
 }

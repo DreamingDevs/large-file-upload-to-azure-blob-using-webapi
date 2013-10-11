@@ -19,9 +19,6 @@ namespace WebAPI.Controllers
 {
     public class FileApiController : ApiController
     {
-        //private IBlobRepository _blobRepository;
-        //private IAzureCache _azureCache;
-
         private IOperations _operations;
 
         public FileApiController(IOperations Operations)
@@ -43,6 +40,7 @@ namespace WebAPI.Controllers
 
             // Temp storage location for File Chunks
             MultipartMemoryStreamProvider provider = new MultipartMemoryStreamProvider();
+            FileChunk chunk = null;
 
             try
             {
@@ -57,20 +55,16 @@ namespace WebAPI.Controllers
                         throw new HttpResponseException(HttpStatusCode.NotFound);
 
                     // Read file chunk detail
-                    FileChunk chunk = provider.Contents[0].Headers.GetMetaData();
+                    chunk = provider.Contents[0].Headers.GetMetaData();
                     chunk.ChunkData = fileChunkStream.ReadFully();
 
-                    // Get saved file bytes using LocalFileName. Put it in the putblock.
-                        // Update Dictionary with FileId - PutblockId
+                    // Upload Chunk to blob storage and store the reference in Azure Cache
                     _operations.UploadChunk(chunk);
 
                     // check for last chunk, if so, then do a PubBlockList
                     // Remove all keys of that FileID from Dictionary
                     if (chunk.IsCompleted)
                         _operations.CommitChunks(chunk);
-
-
-                    fileChunkStream.Dispose();
                 }
 
                 // Send OK Response along with saved file names to the client.                 
