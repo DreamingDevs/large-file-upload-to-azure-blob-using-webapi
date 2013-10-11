@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WebAPI.Models
+namespace Operations
 {
-    /*
     public class FileChunk
     {
         public string FileId { get; set; }
@@ -14,5 +14,4 @@ namespace WebAPI.Models
         public bool IsCompleted { get; set; }
         public string OriginalChunkId { get; set; }
     }
-    */
 }

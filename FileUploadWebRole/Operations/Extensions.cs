@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Web;
-//using WebAPI.Models;
-//using Operations;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
 
-namespace WebAPI
+namespace Operations
 {
-    /*
     public static class Extensions
     {
         public static FileChunk GetMetaData(this HttpContentHeaders headers)
@@ -33,6 +30,4 @@ namespace WebAPI
             return xInt > yInt ? 1 : -1;
         }
     }
-     */
-
 }
