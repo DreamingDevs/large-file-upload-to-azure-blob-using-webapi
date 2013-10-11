@@ -21,7 +21,9 @@ only commit if client notifies service about the final chunk.
 2. WebApi Clients have flxibility to send chunks of any size. But we do recommend to follow Azure BLOCK BLOB storage size limitations for 
 seamless integration.
 3. Completely scalable Web Role architecture.
-4. Loosely couple components because if IoC implementation using Unity framework.
+4. Loosely couple components because if IoC implementation using Unity framework. We have operations layer through which front
+end WebApi is going to communicate with Cache and Blob Repositories.
+5. Default protection of Transaction Integrity by Blob Storage.
 
 
 Technical Stack:
@@ -32,11 +34,17 @@ Technical Stack:
 > 4. ASP.Net MVC4 Web Application
 > 5. .Net 4.5 Console Application (Test)
 
-Next Priority:
+Transaction Integrity:
 -------------
-1. Have a transaction commit and rollback system. In case of any failure, we rollback the complete Block upload. Then
-we notify the client, so that it can re-send the failed transaction of that particular chunk.
-2. Code CleanUp to include Operations layer.
+Q) What if Nth chunk got never uploaded?
+Q) What if there was an Azure Cache exception for Nth chunk?
+Q) What if there was an error while commiting all chunks using PutBlockList?
+
+For all above questions, nswer is going to be very simple and it is as follows - 
+"JUST RE-SEND THE SAME CHUNK AGAIN".
+Transaction commitment scope for Azure Blob storage is very flexible. To be very specific, sending the same chunk with
+same ChunkId, would override a block (if already exists) or creates a new one (if it doesn't exist).
+
 
 Important Notes:
 -------------
@@ -50,7 +58,7 @@ It can be extended further more if required.
 TODO Tasks:
 -----------
 > 1. Build a simple Web HTML page which would use JQuery to invoke this WebApi and upload file in chunks.
-> 2. Implement Validation on server side.
+> 2. Implement Data validation on server side.
 > 3. Implement Basic Authentication with Client Certificate.
 > 4. Unit test WebApi endpoints.
 > 5. Testing completed with 100MB file. Still we need to test with 1GB file.
