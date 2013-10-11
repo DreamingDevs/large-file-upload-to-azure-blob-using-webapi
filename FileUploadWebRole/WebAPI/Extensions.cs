@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Web;
-//using WebAPI.Models;
-//using Operations;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.IO;
 
-namespace WebAPI
+namespace Operations
 {
-    /*
     public static class Extensions
     {
         public static FileChunk GetMetaData(this HttpContentHeaders headers)
@@ -22,17 +20,19 @@ namespace WebAPI
                 OriginalChunkId = headers.Where(p => p.Key == "ChunkId").First().Value.First()
             };
         }
-    }
 
-    public class BlockIdComparer : IComparer<string>
-    {
-        public int Compare(string x, string y)
+        public static byte[] ReadFully(this Stream input)
         {
-            Int32 xInt = Convert.ToInt32(x);
-            Int32 yInt = Convert.ToInt32(y);
-            return xInt > yInt ? 1 : -1;
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
         }
     }
-     */
-
 }
