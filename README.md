@@ -1,4 +1,4 @@
-Upload large files using JQuery to Azure Blob Storage through Azure Web Role WebApi services
+Upload large files to Azure Blob Storage through Azure Web Role WebApi services and Azure Cache Service
 -----------
 
 The main aim of this project is to provide a working scalable solution for uploading large files to server. In this modern 
