@@ -22,14 +22,13 @@ namespace Repository
             return true;
         }
 
-        public bool CommintBlocks(string fileId, List<string> blockIds)
+        public void CommintBlocks(string fileId, List<string> blockIds)
         {
             CloudBlobContainer container = BlobUtilities.GetBlobClient.GetContainerReference(BlobUtilities.Container);
             container.CreateIfNotExists();
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileId);
 
-            blockBlob.PutBlockList(blockIds);
-            return true;
+            blockBlob.PutBlockListAsync(blockIds);
         }
     }
     internal class BlobUtilities

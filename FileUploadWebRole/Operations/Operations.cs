@@ -25,14 +25,15 @@ namespace Operations
             using (MemoryStream stream = new MemoryStream(chunk.ChunkData))
             {
                 _blobRepository.UploadBlock(chunk.FileId, chunk.ChunkId, stream);
-                _azureCache.PutItem(new CacheItem() { FileId = chunk.FileId, Item = chunk });
+                SmallChunk smallChunk = new SmallChunk() { ChunkId = chunk.ChunkId, OriginalChunkId = chunk.OriginalChunkId };
+                _azureCache.PutItem(new CacheItem() { FileId = chunk.FileId, Item = smallChunk });
             }
         }
 
         public void CommitChunks(FileChunk chunk)
         {
             List<CacheItem> cacheItems = _azureCache.GetItems(chunk.FileId);
-            Dictionary<string, string> blockIds = cacheItems.Select(p => (FileChunk)p.Item)
+            Dictionary<string, string> blockIds = cacheItems.Select(p => (SmallChunk)p.Item)
                                                             .Select(p => new { p.OriginalChunkId, p.ChunkId })
                                                             .ToDictionary(d => d.OriginalChunkId, d => d.ChunkId);
 
@@ -40,5 +41,10 @@ namespace Operations
             _blobRepository.CommintBlocks(chunk.FileId, blockIds.Select(p => p.Value).ToList());
             _azureCache.RemoveItems(chunk.FileId);
         }
+    }
+    public class SmallChunk
+    {
+        public string OriginalChunkId { get; set; }
+        public string ChunkId { get; set; }
     }
 }

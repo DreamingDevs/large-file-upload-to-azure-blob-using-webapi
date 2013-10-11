@@ -21,20 +21,21 @@ namespace ServiceTestConsole
                 // Get the File Id
                 var init = client.GetStringAsync("/api/fileapi").Result;
                 string fileId = init.Trim(new char[] { '"' });
-                Console.WriteLine(String.Format("File ID -> {0}",fileId));
+                Console.WriteLine(String.Format("File ID -> {0}", fileId));
 
 
 
-                //************************Test To simulate multiple random file chunks commit ************************//
+                //***************************** Split a big file in to List of Byte arrays *****************************//
 
                 // Reall File data to byte chunks of 100KB.
-                List<byte[]> chunks = new List<byte[]>();
-                int bufferSize = 100 * 1024;
+                Dictionary<int, byte[]> chunks = new Dictionary<int, byte[]>();
+                int bufferSize = 1000 * 1024;
                 byte[] buffer;
 
-                using (FileStream fileData = File.OpenRead(@"c:\Users\aisadmin\Desktop\Me\NF2202533167366.pdf"))
+                using (FileStream fileData = File.OpenRead(@"c:\Users\aisadmin\Desktop\Me\2.flv"))
                 {
                     int index = 0;
+                    int i = 1;
                     while (fileData.Position < fileData.Length)
                     {
 
@@ -49,22 +50,27 @@ namespace ServiceTestConsole
                             fileData.Read(buffer, 0, bufferSize);
                         }
 
-                        chunks.Add(buffer);
+                        chunks.Add(i, buffer);
                         index = (int)fileData.Position;
+                        i++;
                     }
                 }
 
+
+                //***************************** Send individual Byte arrays to FileApi Service *****************************//
+
                 // Send chunks to WebApi endpoint for commits
                 Console.WriteLine("Uploading Chunks - Started");
-                int chunkId = 1;
-                foreach (var chunk in chunks)
+                int count = 1;
+                while (chunks.Count() != 0)
                 {
-                    var fileContent = new ByteArrayContent(chunk);
-                    fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = "Sample.pdf" };
+                    var chunk = chunks.First();
+                    var fileContent = new ByteArrayContent(chunk.Value);
+                    fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = "Sample" };
                     fileContent.Headers.Add("FileId", fileId);
-                    fileContent.Headers.Add("ChunkId", chunkId.ToString("d8"));
+                    fileContent.Headers.Add("ChunkId", chunk.Key.ToString("d8"));
 
-                    if (chunkId == chunks.Count())
+                    if (chunks.Count() == 1)
                         fileContent.Headers.Add("IsCompleted", "true");
                     else
                         fileContent.Headers.Add("IsCompleted", "false");
@@ -75,10 +81,14 @@ namespace ServiceTestConsole
 
                         // Make a call to Web API 
                         var result = client.PostAsync("/api/fileapi", content).Result;
-                        Console.WriteLine(String.Format("Chunk{0} with {1} bytes size. Status:{2}", chunkId.ToString(), chunk.Length, result.StatusCode));
+
+                        if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                            chunks.Remove(chunk.Key);
+
+                        Console.WriteLine(String.Format("Chunk{0} with {1} bytes size. Status:{2}", count.ToString(), chunk.Value.Length, msg.StatusCode));
                     }
 
-                    chunkId++;
+                    count++;
                 }
 
                 // For testing MultiPartFormData

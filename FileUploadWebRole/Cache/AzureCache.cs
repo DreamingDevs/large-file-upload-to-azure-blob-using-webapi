@@ -14,8 +14,7 @@ namespace Cache
         {
             DataCacheFactory factory = new DataCacheFactory();
             cache = factory.GetDefaultCache();
-
-        }       
+        }
 
         public void PutItem(CacheItem item)
         {
@@ -26,7 +25,8 @@ namespace Cache
         public List<CacheItem> GetItems(string fileId)
         {
             List<CacheItem> items = new List<CacheItem>();
-            foreach( var item in cache.GetObjectsInRegion(fileId))
+            var cacheItems = cache.GetObjectsInRegion(fileId);
+            foreach (var item in cacheItems)
             {
                 items.Add(item.Value as CacheItem);
             }
