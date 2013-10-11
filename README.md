@@ -36,9 +36,9 @@ Technical Stack:
 
 Transaction Integrity:
 -------------
-Q) What if Nth chunk got never uploaded?
-Q) What if there was an Azure Cache exception for Nth chunk?
-Q) What if there was an error while commiting all chunks using PutBlockList?
+> Q) What if Nth chunk got never uploaded?
+> Q) What if there was an Azure Cache exception for Nth chunk?
+> Q) What if there was an error while commiting all chunks using PutBlockList?
 
 For all above questions, nswer is going to be very simple and it is as follows - 
 "JUST RE-SEND THE SAME CHUNK AGAIN".
