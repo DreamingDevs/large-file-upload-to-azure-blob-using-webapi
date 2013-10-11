@@ -73,7 +73,6 @@ TODO Tasks:
 > 2. Implement Data validation on server side.
 > 3. Implement Basic Authentication with Client Certificate.
 > 4. Unit test WebApi endpoints.
-> 5. Testing completed with 100MB file. Still we need to test with 1GB file.
 
 Test Run:
 ----------
